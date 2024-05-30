@@ -47,3 +47,35 @@ jobs:
       - docker/push:
           image: $DOCKER_LOGIN/$CIRCLE_PROJECT_REPONAME
           tag: 0.1.<< pipeline.number >>
+  deploy_aws_ecs:
+    machine:
+      image: ubuntu-2004:202101-01
+    resource_class: arm.medium
+    steps:
+      - checkout
+      - run:
+          name: Create .terraformrc file locally
+          command: echo "credentials \"app.terraform.io\" {token = \"$TERRAFORM_TOKEN\"}" > $HOME/.terraformrc
+      - terraform/install:
+          terraform_version: "1.0.2"
+          arch: "arm64"
+          os: "linux"
+      - terraform/init:
+          path: ./terraform/ecs
+      - terraform/plan:
+          path: ./terraform/ecs
+      - run:
+          name: Terraform apply
+          command: |
+            terraform -chdir=./terraform/ecs apply \
+              -var docker_img_name=${DOCKER_LOGIN}/${CIRCLE_PROJECT_REPONAME} \
+              -var docker_img_tag=0.1.<< pipeline.number >> \
+              -auto-approve
+            export ENDPOINT="$(terraform -chdir=./terraform/ecs output load_balancer_hostname)"
+            mkdir -p /tmp/ecs/
+            echo 'export ENDPOINT='${ENDPOINT} > /tmp/ecs/endpoint
+      - persist_to_workspace:
+          root: /tmp/ecs/
+          paths:
+            - "*"      
+      - run: sleep 90
