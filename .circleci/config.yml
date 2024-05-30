@@ -92,3 +92,22 @@ jobs:
           command: |
             source /tmp/ecs/endpoint
             ./test/smoke_test $ENDPOINT
+  destroy_aws_ecs:
+    machine:
+      image: ubuntu-2004:202101-01
+    resource_class: arm.medium
+    steps:
+      - checkout
+      - run:
+          name: Create .terraformrc file locally
+          command: echo "credentials \"app.terraform.io\" {token = \"$TERRAFORM_TOKEN\"}" > $HOME/.terraformrc
+      - terraform/install:
+          terraform_version: "1.0.2"
+          arch: "arm64"
+          os: "linux"
+      - terraform/init:
+          path: ./terraform/ecs
+      - terraform/plan:
+          path: ./terraform/ecs
+      - terraform/destroy:
+          path: ./terraform/ecs
