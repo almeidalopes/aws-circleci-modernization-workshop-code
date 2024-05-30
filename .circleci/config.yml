@@ -1,3 +1,26 @@
 version: 2.1
+orbs:
+  snyk: snyk/snyk@1.2.3
+  aws-cli: circleci/aws-cli@2.0.2
+  node: circleci/node@4.2.0
+  docker: circleci/docker@1.5.0
+  terraform: circleci/terraform@3.0.0
 jobs:
-workflows:
+  run_tests:
+    docker:
+      - image: cimg/node:14.16.0
+    steps:
+      - checkout
+      - node/install-packages:
+          override-ci-command: npm install
+          cache-path: ~/project/node_modules
+      - run:
+          name: Run Unit Tests
+          command: |
+            ./node_modules/mocha/bin/mocha test/ --reporter mocha-junit-reporter --reporter-options mochaFile=./test/test-results.xml
+            ./node_modules/mocha/bin/mocha test/ --reporter mochawesome --reporter-options reportDir=test-results,reportFilename=test-results
+      - store_test_results:
+          path: test/
+      - store_artifacts:
+          path: test-results
+    
