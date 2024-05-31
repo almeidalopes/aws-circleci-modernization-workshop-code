@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
   snyk: snyk/snyk@1.2.3
-  aws-cli: circleci/aws-cli@2.0.2
+  aws-cli: circleci/aws-cli@4.0
   node: circleci/node@4.2.0
   docker: circleci/docker@1.5.0
   terraform: circleci/terraform@3.0.0
@@ -23,6 +23,13 @@ jobs:
           path: test/
       - store_artifacts:
           path: test-results
+  test_aws_cli:
+    executor: aws-cli/default
+    steps:
+      - checkout
+      - aws-cli/setup:
+          profile-name: circleci-workshop-profile
+      - run: echo "aws s3 ls"
   scan_app:
     docker:
       - image: cimg/node:14.16.0
