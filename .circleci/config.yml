@@ -27,7 +27,7 @@ jobs:
     executor: aws-cli/default
     steps:
       - checkout
-      - aws-cli/setup:
+      - aws-cli/setup
       - run:
           command: aws s3 ls
   scan_app:
