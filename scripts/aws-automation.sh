@@ -21,4 +21,7 @@ code_artifact_id=$(echo "$output" | jq -r '.codeArtifactId')
 # Run the second command with the codeArtifactId
 aws codeguru-security create-scan --scan-name cci-workshop-cli-scan-4 --resource-id "{\"codeArtifactId\":\"$code_artifact_id\"}"
 
-aws codeguru-security get-findings --scan-name cci-workshop-cli-scan-4
+result=$(aws codeguru-security get-findings --scan-name cci-workshop-cli-scan-4)
+
+echo $result
+
