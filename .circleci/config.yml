@@ -128,16 +128,16 @@ workflows:
       - scan_app
       - build_docker_image
       - test_aws_cli
-      - deploy_aws_ecs:
-          requires:
-            - build_docker_image
-      - smoketest_deployment:
-          requires:
-            - deploy_aws_ecs
-      - approve_destroy:
-          type: approval
-          requires:
-            - smoketest_deployment
-      - destroy_aws_ecs:
-          requires:
-            - approve_destroy
+#      - deploy_aws_ecs:
+#          requires:
+#            - build_docker_image
+#      - smoketest_deployment:
+#          requires:
+#            - deploy_aws_ecs
+#      - approve_destroy:
+#          type: approval
+#          requires:
+#            - smoketest_deployment
+#      - destroy_aws_ecs:
+#          requires:
+#            - approve_destroy
