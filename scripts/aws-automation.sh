@@ -23,5 +23,5 @@ aws codeguru-security create-scan --scan-name cci-workshop-cli-scan-4 --resource
 
 result=$(aws codeguru-security get-findings --scan-name cci-workshop-cli-scan-4)
 
-echo $result
+echo -e "$result"
 
