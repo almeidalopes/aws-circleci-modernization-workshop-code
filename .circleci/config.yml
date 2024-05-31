@@ -28,7 +28,7 @@ jobs:
     steps:
       - checkout
       - aws-cli/setup:
-          profile-name: circleci-workshop-profile
+          profile-name: proworkshop
       - run: echo "aws s3 ls"
   scan_app:
     docker:
