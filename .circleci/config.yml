@@ -28,7 +28,6 @@ jobs:
     steps:
       - checkout
       - aws-cli/setup:
-          profile-name: proworkshop
       - run: echo "aws s3 ls"
   scan_app:
     docker:
