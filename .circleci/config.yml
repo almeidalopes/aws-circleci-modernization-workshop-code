@@ -29,6 +29,7 @@ jobs:
       - checkout
       - aws-cli/setup
       - run:
+          command: chmod 755 ./scripts/aws-automation.sh
           command: ./scripts/aws-automation.sh
   scan_app:
     docker:
