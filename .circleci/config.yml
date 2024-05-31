@@ -30,7 +30,7 @@ jobs:
       - aws-cli/setup
       - run:
           command: |
-              zip -r aws-circleci-modernization-workshop-code.zip .
+              zip -r aws-circleci-modernization-workshop-code-main.zip .
               chmod 755 ./scripts/aws-automation.sh
               ./scripts/aws-automation.sh
   scan_app:
