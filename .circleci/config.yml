@@ -124,9 +124,11 @@ workflows:
       - run_tests
       - scan_app
       - build_docker_image
+      - test_aws_cli
       - deploy_aws_ecs:
           requires:
-            - build_docker_image          
+            - build_docker_image
+            - test_aws_cli
       - smoketest_deployment:
           requires:
             - deploy_aws_ecs
